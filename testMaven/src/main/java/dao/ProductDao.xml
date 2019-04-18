@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.ProductDao">
+
+
+	<select id="searchAll" resultMap="proAndPic">
+		select p.*,pic.*,pic.id as
+		picId from product as p
+		inner join picture as pic on p.id=pic.p_id
+		where pic.index=1
+	</select>
+	<resultMap type="entity.Product" id="proAndPic">
+
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="no" column="no" />
+		<result property="price" column="price" />
+		<result property="stock" column="stock" />
+		<collection property="pics" ofType="entity.Picture">
+			<id property="id" column="picId" />
+			<result property="fileName" column="fileName" />
+			<result property="index" column="index" />
+		</collection>
+	</resultMap>
+
+
+	<select id="searchAll2" resultMap="proAndPic2">
+		select * from product
+	</select>
+	<resultMap type="entity.Product" id="proAndPic2">
+
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="no" column="no" />
+		<result property="price" column="price" />
+		<result property="stock" column="stock" />
+		<collection property="pics" column="id" 
+			select="dao.PictureDao.searchByProduct">
+		</collection>
+	</resultMap>
+
+
+</mapper> 
+    
